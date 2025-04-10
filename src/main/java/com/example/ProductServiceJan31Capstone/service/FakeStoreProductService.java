@@ -2,6 +2,7 @@ package com.example.ProductServiceJan31Capstone.service;
 
 import com.example.ProductServiceJan31Capstone.dtos.FakeStoreProductDto;
 import com.example.ProductServiceJan31Capstone.dtos.FakeStoreProductRequestDto;
+import com.example.ProductServiceJan31Capstone.exceptions.ProductNotFoundException;
 import com.example.ProductServiceJan31Capstone.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +19,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getProductById(long id) {
+    public Product getProductById(long id) throws ProductNotFoundException {
     // restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeProductServiceImpl.class);
       FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject(
               "https://fakestoreapi.com/products/" + id,
@@ -34,6 +35,10 @@ public class FakeStoreProductService implements ProductService{
         //        return getProductById();
         //}
         // 3- got to dto and create toProduct()
+
+        if (fakeStoreProductDto == null){
+            throw  new ProductNotFoundException("The product for id " + id + " is not available..");
+        }
 
         return fakeStoreProductDto.toProduct();
     }

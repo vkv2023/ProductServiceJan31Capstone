@@ -1,7 +1,9 @@
 package com.example.ProductServiceJan31Capstone.controllers;
 
 import com.example.ProductServiceJan31Capstone.dtos.CreateFakeStoreProductRequestDto;
+import com.example.ProductServiceJan31Capstone.dtos.ErrorDto;
 import com.example.ProductServiceJan31Capstone.dtos.ProductResponseDto;
+import com.example.ProductServiceJan31Capstone.exceptions.ProductNotFoundException;
 import com.example.ProductServiceJan31Capstone.models.Product;
 import com.example.ProductServiceJan31Capstone.service.FakeStoreProductService;
 import com.example.ProductServiceJan31Capstone.service.ProductService;
@@ -56,7 +58,7 @@ public class ProductController {
     //PathVariable have optional id which is same as used as variable id
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id")
-                                                                 long id){
+                                                                 long id) throws ProductNotFoundException {
 
         Product product = productService.getProductById(id);
         ProductResponseDto productResponseDto = ProductResponseDto.from(product);
@@ -95,5 +97,14 @@ public class ProductController {
         return productResponseDto;
     }
 
+    // For handling the NUllPointerExceptions in Product Controller
+    // Creating a new Global Exception Handler in exception package
+    @ExceptionHandler(NullPointerException.class)
+    public ErrorDto handleNullPointerException(){
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("Null pointer Exception..");
+        errorDto.setStatus("Failure");
+        return errorDto;
+    }
 
 }

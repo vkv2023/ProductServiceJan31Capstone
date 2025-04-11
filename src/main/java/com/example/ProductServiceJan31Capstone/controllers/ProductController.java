@@ -7,6 +7,7 @@ import com.example.ProductServiceJan31Capstone.exceptions.ProductNotFoundExcepti
 import com.example.ProductServiceJan31Capstone.models.Product;
 import com.example.ProductServiceJan31Capstone.service.FakeStoreProductService;
 import com.example.ProductServiceJan31Capstone.service.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/*
+There are 2 ProductService, now ProductController to decide which service to call first,
+productDbService or fakeStoreProductService
+1- Either mark 1 service as primary
+2- Name each service and use @qualifier="productDBService" in ProductController cons
+*/
+
 @RestController
 public class ProductController {
 
     // FakeStoreProductService fakeStoreProductService;
     ProductService productService;
 
-    public ProductController(FakeStoreProductService productService) {
+    public ProductController(@Qualifier("productDBService")
+            ProductService productService) {
                 this.productService = productService;
     }
 

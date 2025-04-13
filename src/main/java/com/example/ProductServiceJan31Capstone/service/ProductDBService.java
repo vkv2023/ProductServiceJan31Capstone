@@ -25,12 +25,18 @@ public class ProductDBService implements ProductService{
 
     @Override
     public Product getProductById(long id) throws ProductNotFoundException {
-        return null;
+        Optional<Product> optionalProduct = productRepository.findById(id);
+
+        if (optionalProduct.isEmpty()){
+            throw new ProductNotFoundException("Product with Id " + id + " is not present.");
+        }
+
+        return optionalProduct.get();
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepository.findAll();
     }
 
     @Override
@@ -68,4 +74,10 @@ public class ProductDBService implements ProductService{
 
         return categoryRepository.save(newCategory);
     }
+
+
+//    public List<Product> getAllProductsLike(String name) {
+//        return productRepository.findProductsLike(name);
+//    }
+
 }

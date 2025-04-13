@@ -11,5 +11,5 @@ public interface ProductService {
     Product getProductById(long id) throws ProductNotFoundException;
     List<Product> getAllProducts();
     Product createProduct(String name, String description, double price, String category, String imageUrl);
-
+//    List<Product> getAllProductsLike(String name);
 }

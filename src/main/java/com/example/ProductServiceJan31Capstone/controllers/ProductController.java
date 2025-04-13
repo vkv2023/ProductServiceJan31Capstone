@@ -113,6 +113,22 @@ public class ProductController {
         return productResponseDto;
     }
 
+
+//    @GetMapping("/products/{name}")
+////    public List<ProductResponseDto>  searchProductsLike(@PathVariable String name){
+//    public List<Product>  searchProductsLike(@PathVariable String name){
+//        List<Product> listOfProducts = productService.getAllProductsLike(name);
+////        List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
+////
+////        for(Product product: listOfProducts){
+////            ProductResponseDto productResponseDto = ProductResponseDto.from(product);
+////            productResponseDtoList.add(productResponseDto);
+////        }
+//
+//        return listOfProducts;
+//    }
+
+
     // For handling the NUllPointerExceptions in Product Controller
     // Creating a new Global Exception Handler in exception package
     @ExceptionHandler(NullPointerException.class)

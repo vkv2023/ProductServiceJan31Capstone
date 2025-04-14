@@ -5,7 +5,9 @@ import com.example.ProductServiceJan31Capstone.models.Category;
 import com.example.ProductServiceJan31Capstone.models.Product;
 import com.example.ProductServiceJan31Capstone.repositories.CategoryRepository;
 import com.example.ProductServiceJan31Capstone.repositories.ProductRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +32,6 @@ public class ProductDBService implements ProductService{
         if (optionalProduct.isEmpty()){
             throw new ProductNotFoundException("Product with Id " + id + " is not present.");
         }
-
         return optionalProduct.get();
     }
 
@@ -87,6 +88,18 @@ public class ProductDBService implements ProductService{
             return productRepository.findByCategory(categoryObj);
         }
         return productRepository.findAll();
+    }
+/*
+    Testing with Postman
+    Successful Deletion: DELETE /products/delete/123 → 204 No Content
+    Non-existent Product: DELETE /products/delete/999 → 404 Not Found
+*/
+    //To ensure atomic operations we use @Transactional
+    @Override
+    @Transactional
+    public Void deleteProduct(long id) throws EmptyResultDataAccessException {
+        productRepository.deleteById(id);
+        return null;
     }
 
 }

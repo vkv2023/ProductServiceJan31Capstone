@@ -90,4 +90,9 @@ public class FakeStoreProductService implements ProductService{
         }
         return products;
     }
+
+    @Override
+    public Void deleteProduct(long id) {
+        return null;
+    }
 }

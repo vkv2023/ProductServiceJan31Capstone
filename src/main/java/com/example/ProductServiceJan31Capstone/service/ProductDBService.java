@@ -75,9 +75,18 @@ public class ProductDBService implements ProductService{
         return categoryRepository.save(newCategory);
     }
 
+    public List<Product> searchProducts(String name, String category) {
 
-//    public List<Product> getAllProductsLike(String name) {
-//        return productRepository.findProductsLike(name);
-//    }
+        Category categoryObj = getCategoryFromDB(category);
+
+        if (name != null && category != null) {
+            return productRepository.findByNameContainingIgnoreCaseAndCategory(name, categoryObj);
+        } else if (name != null) {
+            return productRepository.findByNameContainingIgnoreCase(name);
+        } else if (categoryObj != null) {
+            return productRepository.findByCategory(categoryObj);
+        }
+        return productRepository.findAll();
+    }
 
 }

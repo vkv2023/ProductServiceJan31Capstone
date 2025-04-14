@@ -1,5 +1,6 @@
 package com.example.ProductServiceJan31Capstone.repositories;
 
+import com.example.ProductServiceJan31Capstone.models.Category;
 import com.example.ProductServiceJan31Capstone.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,7 +13,16 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
      Optional<Product> findById(long id);
-     List<Product> findAll();
      Product save(Product product);
-//     List<Product> findProductsLike(String name);
+
+     List<Product> findAll();
+
+     // Search by product name (LIKE %name%)
+     List<Product> findByNameContainingIgnoreCase(String name);
+
+     // Search by exact category match
+     List<Product> findByCategory(Category category);
+
+     // Combined search (name LIKE %name% AND category)
+     List<Product> findByNameContainingIgnoreCaseAndCategory(String name, Category category);
 }

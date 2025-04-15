@@ -27,12 +27,37 @@ public class ProductDBService implements ProductService{
 
     @Override
     public Product getProductById(long id) throws ProductNotFoundException {
-        Optional<Product> optionalProduct = productRepository.findById(id);
+        /*
+              Using getProductByID to test Queries written in CustomQuery Class
+              and below 4 methods define in ProductDbService
+        */
 
-        if (optionalProduct.isEmpty()){
-            throw new ProductNotFoundException("Product with Id " + id + " is not present.");
-        }
-        return optionalProduct.get();
+//        1- Method to test
+        Optional<Category> optionalCategory = categoryRepository.findByName("Laptop");
+//        List<Product> product = productRepository.findByCategory(optionalCategory.get());
+
+        //to Fecth Lazy or use previosu one
+         List<Product> product = optionalCategory.get().getProducts();
+
+//        2- Method to test
+//        List<Product> product = productRepository.findByCategory_Name("Laptop");
+
+//        3- Method to test
+//        List<Product> product = productRepository.getProductByCategoryName("Laptop");
+
+//        4- Method to test
+//        List<Product> product = productRepository.getProductByCategoryNameNative("Laptop");
+
+        System.out.println(product);
+
+        return null;
+
+//        Optional<Product> optionalProduct = productRepository.findById(id);
+//
+//        if (optionalProduct.isEmpty()){
+//            throw new ProductNotFoundException("Product with Id " + id + " is not present.");
+//        }
+//        return optionalProduct.get();
     }
 
     @Override

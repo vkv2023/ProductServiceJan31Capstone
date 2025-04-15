@@ -32,7 +32,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      // Combined search (name LIKE %name% AND category)
      List<Product> findByNameContainingIgnoreCaseAndCategory(String name, Category category);
 
-     /*
+/*
           Using QueryMethod to test in getProductById
           We'll comment these methods later after testing.
 

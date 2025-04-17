@@ -21,6 +21,7 @@ public abstract class BaseModel {
     @Temporal(TemporalType.TIMESTAMP)
     protected Date lastModifiedAt;
 
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     protected boolean isDeleted;
 
     // you can use both @PrePersist and @PreUpdate together in a single entity
@@ -38,6 +39,11 @@ public abstract class BaseModel {
     @PreUpdate
     protected void onUpdate() {
         this.lastModifiedAt = new Date();
+    }
+
+    //
+    public void markAsDeleted() {
+        this.isDeleted = true;
     }
 
 }

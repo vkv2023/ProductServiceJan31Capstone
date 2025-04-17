@@ -133,13 +133,18 @@ public class ProductController {
         return productResponseDto;
     }
 
-    // Delete Product
+    // Delete Product Physically or Marking Soft Delete
     @DeleteMapping("/products/delete/{id}")
     public ResponseEntity<Void> deleteProductByID(@PathVariable long id) throws EmptyResultDataAccessException, ProductNotFoundException {
         Optional<Product> product = Optional.ofNullable(productService.getProductById(id));
 
         if (product.isPresent()){
-            productService.deleteProduct(id);
+            // If we need to DELETE the product physically
+
+            // productService.deleteProduct(id);
+
+            // If we need to Mark the isDeleted FLag as True
+            productService.updateIsDeletedById(id);
             return ResponseEntity.noContent().build(); //204 No Content
         }
         return ResponseEntity.noContent().build(); // Not Found

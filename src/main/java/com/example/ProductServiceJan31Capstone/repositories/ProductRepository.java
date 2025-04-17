@@ -3,8 +3,11 @@ package com.example.ProductServiceJan31Capstone.repositories;
 import com.example.ProductServiceJan31Capstone.models.Category;
 import com.example.ProductServiceJan31Capstone.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -18,8 +21,15 @@ import com.example.ProductServiceJan31Capstone.customrQuery.CustomQuery;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
      Optional<Product> findById(long id);
+
      Product save(Product product);
+
      Void deleteById(long id);
+
+     @Transactional
+     @Modifying
+     @Query(CustomQuery.UPDATE_IS_DELETED_FLAG)
+     int updateIsDeletedById(@Param("id") long id);
 
      List<Product> findAll();
 
@@ -33,11 +43,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      List<Product> findByNameContainingIgnoreCaseAndCategory(String name, Category category);
 
 /*
-          Using QueryMethod to test in getProductById
-          We'll comment these methods later after testing.
+     Using QueryMethod to test in getProductById
+     We'll comment these methods later after testing.
 
 
- //    List<Product> findByCategory(Category category);
+ //  List<Product> findByCategory(Category category);
 
      List<Product> findByCategory_Name(String category);
 

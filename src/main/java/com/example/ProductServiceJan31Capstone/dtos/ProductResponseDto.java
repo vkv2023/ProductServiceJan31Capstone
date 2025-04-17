@@ -20,6 +20,10 @@ public class ProductResponseDto {
     // we are using static as we don't want to create a new object
     public static ProductResponseDto from(Product product){
 
+        if (product == null){
+            return null;
+        }
+
         ProductResponseDto productResponseDto = new ProductResponseDto();
 
         productResponseDto.setId(product.getId());

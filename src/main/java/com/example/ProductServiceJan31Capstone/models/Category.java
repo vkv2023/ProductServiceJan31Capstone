@@ -1,5 +1,6 @@
 package com.example.ProductServiceJan31Capstone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -15,10 +16,11 @@ import java.util.List;
 @Setter
 @Entity
 public class Category extends BaseModel{
-//    private long id;
-    private String name;
+//  private long id;
+//  private String name;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
+    @JsonIgnore
     private List<Product> products;
 //    We might need below here for featured products
 //    @OneToMany(mappedBy = "category")

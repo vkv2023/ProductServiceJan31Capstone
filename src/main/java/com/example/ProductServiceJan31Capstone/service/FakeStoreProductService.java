@@ -4,7 +4,9 @@ import com.example.ProductServiceJan31Capstone.dtos.FakeStoreProductDto;
 import com.example.ProductServiceJan31Capstone.dtos.FakeStoreProductRequestDto;
 import com.example.ProductServiceJan31Capstone.exceptions.ProductNotFoundException;
 import com.example.ProductServiceJan31Capstone.models.Product;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -92,7 +94,12 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Void deleteProduct(long id) {
+    public Void deleteProduct(long id) throws EmptyResultDataAccessException{
         return null;
+    }
+
+    @Override
+    public int updateIsDeletedById(long id) throws EmptyResultDataAccessException{
+        return 0;
     }
 }

@@ -36,7 +36,7 @@ public class ProductDBService implements ProductService{
 //        Optional<Category> optionalCategory = categoryRepository.findByName("Laptop");
 //        List<Product> product = productRepository.findByCategory(optionalCategory.get());
 
-        //to Fecth Lazy or use previosu one
+        //to Fetch Lazy or use previous one
 //      List<Product> product = optionalCategory.get().getProducts();
 
 //        2- Method to test
@@ -66,6 +66,7 @@ public class ProductDBService implements ProductService{
     }
 
     @Override
+    @Transactional
     public Product createProduct(String name, String description,
                                  double price, String category, String imageUrl) {
 
@@ -125,6 +126,13 @@ public class ProductDBService implements ProductService{
     public Void deleteProduct(long id) throws EmptyResultDataAccessException {
         productRepository.deleteById(id);
         return null;
+    }
+
+    @Override
+    @Transactional
+    public int updateIsDeletedById(long id) throws EmptyResultDataAccessException{
+        productRepository.updateIsDeletedById(id);
+        return 1;
     }
 
 }

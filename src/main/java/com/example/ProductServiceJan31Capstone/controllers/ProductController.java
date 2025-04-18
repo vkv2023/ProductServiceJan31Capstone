@@ -68,7 +68,7 @@ public class ProductController {
     //PathVariable have optional id which is same as used as variable id
 
     @GetMapping("/products/{id}")
-    //public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
+//    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
     public ProductResponseDto getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
 
         Product product = productService.getProductById(id); // will mock this method in Test

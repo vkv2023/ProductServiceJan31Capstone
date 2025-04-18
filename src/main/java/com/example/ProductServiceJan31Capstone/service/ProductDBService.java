@@ -52,7 +52,7 @@ public class ProductDBService implements ProductService{
 
 //        return null;
 
-        Optional<Product> optionalProduct = productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(id); // mock this function
 
         if (optionalProduct.isEmpty()){
             throw new ProductNotFoundException("Product with Id " + id + " is not present.");
@@ -62,7 +62,7 @@ public class ProductDBService implements ProductService{
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll(); // mock this test
     }
 
     @Override
@@ -76,13 +76,13 @@ public class ProductDBService implements ProductService{
         product.setPrice(price);
         product.setImageUrl(imageUrl);
 
-        // In order to ensure Category is available beofre product
+        // In order to ensure Category is available before product
         // create a category if not available, if available then return it.
 
         // Category categoryObj = new Category();
         // categoryObj.setName(category);
 
-        Category categoryObj = getCategoryFromDB(category);
+        Category categoryObj = getCategoryFromDB(category); // mock this function if null or not
 
         product.setCategory(categoryObj);
         return productRepository.save(product);

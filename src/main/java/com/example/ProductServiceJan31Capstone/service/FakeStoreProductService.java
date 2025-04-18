@@ -25,7 +25,7 @@ public class FakeStoreProductService implements ProductService{
     // restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeProductServiceImpl.class);
       FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject(
               "https://fakestoreapi.com/products/" + id,
-              FakeStoreProductDto.class);
+              FakeStoreProductDto.class); // Need to Mock this
         // 1- way to getting the result
         //        Product product = new Product();
         //        product.setId(fakeStoreProductDto.getId());
@@ -75,7 +75,7 @@ public class FakeStoreProductService implements ProductService{
         FakeStoreProductDto fakeStoreProductDto =
                 restTemplate.postForObject("https://fakestoreapi.com/products",
                 fakeStoreProductRequestDto,
-                FakeStoreProductDto.class);
+                FakeStoreProductDto.class); // mock this test
 
         return fakeStoreProductDto.toProduct();
     }

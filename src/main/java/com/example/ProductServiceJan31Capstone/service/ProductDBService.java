@@ -8,6 +8,7 @@ import com.example.ProductServiceJan31Capstone.repositories.ProductRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class ProductDBService implements ProductService{
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
+   @Override
     public Product getProductById(long id) throws ProductNotFoundException {
     /*
           Using getProductByID to test Queries written in CustomQuery Class

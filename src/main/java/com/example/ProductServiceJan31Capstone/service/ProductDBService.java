@@ -5,10 +5,12 @@ import com.example.ProductServiceJan31Capstone.models.Category;
 import com.example.ProductServiceJan31Capstone.models.Product;
 import com.example.ProductServiceJan31Capstone.repositories.CategoryRepository;
 import com.example.ProductServiceJan31Capstone.repositories.ProductRepository;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -16,14 +18,18 @@ import java.util.Optional;
 @Service("productDBService")
 // 1- use Primary as Service
 //@Primary
-public class ProductDBService implements ProductService{
+public class ProductDBService implements ProductService, ProductAIServices{
 
     ProductRepository productRepository;
     CategoryRepository categoryRepository;
+    private final ChatClient chatClient;
 
-    public ProductDBService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductDBService(ProductRepository productRepository,
+                            CategoryRepository categoryRepository,
+                            ChatClient chatClient) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.chatClient = chatClient;
     }
 
    @Override
@@ -87,6 +93,41 @@ public class ProductDBService implements ProductService{
 
         product.setCategory(categoryObj);
         return productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
+    public Product createProductWithAIDescription(
+            String name, double price, String imageUrl, String category){
+
+        Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        product.setImageUrl(imageUrl);
+        String description = getDescriptionFromAI(product);
+        product.setDescription(description);
+
+        // In order to ensure Category is available before product
+        // create a category if not available, if available then return it.
+
+        // Category categoryObj = new Category();
+        // categoryObj.setName(category);
+
+        Category categoryObj = getCategoryFromDB(category); // mock this function if null or not
+
+        product.setCategory(categoryObj);
+
+        return productRepository.save(product);
+    }
+
+    private String getDescriptionFromAI(Product product){
+        String messagePrompt = String.format("Generate description for a product name '%s' " +
+                        ", the price $%.2f of the product and given the imageUrl is '%s" +
+                        "as and the category is '%s', please limit response to 200 words.",
+                product.getName().toLowerCase(),product.getPrice(), product.getImageUrl(), product.getCategory());
+
+        return chatClient.prompt().user(messagePrompt).call().content();
+
     }
 
     private Category getCategoryFromDB(String name){

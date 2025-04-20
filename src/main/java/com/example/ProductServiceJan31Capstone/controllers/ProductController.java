@@ -3,8 +3,10 @@ package com.example.ProductServiceJan31Capstone.controllers;
 import com.example.ProductServiceJan31Capstone.dtos.CreateFakeStoreProductRequestDto;
 import com.example.ProductServiceJan31Capstone.dtos.ErrorDto;
 import com.example.ProductServiceJan31Capstone.dtos.ProductResponseDto;
+import com.example.ProductServiceJan31Capstone.dtos.ProductWithAIDescDto;
 import com.example.ProductServiceJan31Capstone.exceptions.ProductNotFoundException;
 import com.example.ProductServiceJan31Capstone.models.Product;
+import com.example.ProductServiceJan31Capstone.service.ProductAIServices;
 import com.example.ProductServiceJan31Capstone.service.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,10 +30,12 @@ public class ProductController {
 
     // FakeStoreProductService fakeStoreProductService;
     ProductService productService;
+    ProductAIServices productAIServices;
 
     public ProductController(@Qualifier("productDBService")
-            ProductService productService) {
+            ProductService productService, ProductAIServices productAIServices) {
                 this.productService = productService;
+                this.productAIServices = productAIServices;
     }
 
 /*
@@ -118,7 +122,7 @@ public class ProductController {
     }
 
     //Create a new Product
-    @PostMapping("/products")
+    @PostMapping("/products/create")
     public ProductResponseDto createProduct(@RequestBody
                                             CreateFakeStoreProductRequestDto createProductRequestDto){
         Product product =
@@ -132,6 +136,22 @@ public class ProductController {
 
         ProductResponseDto productResponseDto = ProductResponseDto.from(product);
         return productResponseDto;
+    }
+
+    // Creating a product without description and OPenAI will create description for us.
+
+    @PostMapping("/products-without-description")
+    public ProductResponseDto createProductWithAIDescription(
+            @RequestBody ProductWithAIDescDto productWithAIDescDto){
+
+        Product product = productAIServices.createProductWithAIDescription(
+                productWithAIDescDto.getName(),
+                productWithAIDescDto.getPrice(),
+                productWithAIDescDto.getImageUrl(),
+                productWithAIDescDto.getCategory()
+        );
+
+        return ProductResponseDto.from(product);
     }
 
     // Delete Product Physically or Marking Soft Delete

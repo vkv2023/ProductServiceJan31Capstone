@@ -2,6 +2,8 @@ package com.example.ProductServiceJan31Capstone.repositories;
 
 import com.example.ProductServiceJan31Capstone.models.Category;
 import com.example.ProductServiceJan31Capstone.models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -57,5 +59,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      @Query(value = CustomQuery.GET_PRODUCTS_FROM_CATEGORY_NAME_NATIVE, nativeQuery = true)
      List<Product> getProductByCategoryNameNative(@Param("categoryName") String categoryName);
 */
+
+     // For Search Controller<Pagination>, we are using Product Repository
+     // One way to write a query where offset = pageNumber + page size, limit = pageSize
+
+     // List<Product> findByNameContaining(String query);
+
+     // OR use Pageable and Page
+
+     Page<Product> findByNameContaining(String query, Pageable pageable);
 
 }

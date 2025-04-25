@@ -20,7 +20,7 @@ public class Category extends BaseModel{
 //  private String name;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
-    @JsonIgnore
+    @JsonIgnore // When forming result just ignore this fields. and not include products again
     private List<Product> products;
 //    We might need below here for featured products
 //    @OneToMany(mappedBy = "category")

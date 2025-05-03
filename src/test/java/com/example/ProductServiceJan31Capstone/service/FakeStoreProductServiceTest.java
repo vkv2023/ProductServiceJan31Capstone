@@ -6,6 +6,7 @@ import com.example.ProductServiceJan31Capstone.exceptions.ProductNotFoundExcepti
 import com.example.ProductServiceJan31Capstone.models.Product;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,8 +18,10 @@ class FakeStoreProductServiceTest {
 
     RestTemplate restTemplate = Mockito.mock(RestTemplate.class);
 
+    RedisTemplate<String, Object> redisTemplate = Mockito.mock(RedisTemplate.class);
+
     FakeStoreProductService fakeStoreProductService =
-            new FakeStoreProductService(restTemplate);
+            new FakeStoreProductService(restTemplate, redisTemplate);
 
     @Test
     public void testGetProductByIdReturnProduct() throws ProductNotFoundException {

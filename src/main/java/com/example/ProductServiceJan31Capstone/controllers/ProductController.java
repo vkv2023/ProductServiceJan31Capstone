@@ -32,8 +32,10 @@ public class ProductController {
     ProductService productService;
     ProductAIServices productAIServices;
 
-    public ProductController(@Qualifier("productDBService")
-            ProductService productService, ProductAIServices productAIServices) {
+    // change Qualifier as FakeStoreProductService "fakestore" from "productDBService" to check Redis
+    // and vice-versa
+    public ProductController(@Qualifier("fakeStore") ProductService productService, ProductAIServices productAIServices){
+//  public ProductController(@Qualifier("productDBService") ProductService productService, ProductAIServices productAIServices) {
                 this.productService = productService;
                 this.productAIServices = productAIServices;
     }

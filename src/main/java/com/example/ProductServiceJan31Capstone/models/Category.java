@@ -10,12 +10,13 @@ import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
-public class Category extends BaseModel{
+public class Category extends BaseModel implements Serializable {
 //  private long id;
 //  private String name;
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)

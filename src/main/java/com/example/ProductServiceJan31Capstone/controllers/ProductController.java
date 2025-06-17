@@ -1,5 +1,6 @@
 package com.example.ProductServiceJan31Capstone.controllers;
 
+import com.example.ProductServiceJan31Capstone.commons.ApplicationCommons;
 import com.example.ProductServiceJan31Capstone.dtos.CreateFakeStoreProductRequestDto;
 import com.example.ProductServiceJan31Capstone.dtos.ErrorDto;
 import com.example.ProductServiceJan31Capstone.dtos.ProductResponseDto;
@@ -29,15 +30,20 @@ productDbService or fakeStoreProductService
 public class ProductController {
 
     // FakeStoreProductService fakeStoreProductService;
+    ApplicationCommons applicationCommons;
     ProductService productService;
     ProductAIServices productAIServices;
 
-    // change Qualifier as FakeStoreProductService "fakestore" from "productDBService" to check Redis
+    // Change Qualifier as FakeStoreProductService
+    // "fakestore" from "productDBService" to check Redis
     // and vice-versa
-    public ProductController(@Qualifier("fakeStore") ProductService productService, ProductAIServices productAIServices){
+    public ProductController(@Qualifier("productDBService") ProductService productService,
+                             ProductAIServices productAIServices,
+                             ApplicationCommons applicationCommons){
 //  public ProductController(@Qualifier("productDBService") ProductService productService, ProductAIServices productAIServices) {
                 this.productService = productService;
                 this.productAIServices = productAIServices;
+                this.applicationCommons = applicationCommons;
     }
 
 /*
@@ -73,19 +79,36 @@ public class ProductController {
     //Returning ResponseEntity as HttpStatus OK, ACCEPTED OR any other
     //PathVariable have optional id which is same as used as variable id
 
+    //  Need to use below api to use without user service interaction
+    //  or no redirect to userService for product information
+/*
     @GetMapping("/products/{id}")
-//    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
-    public ProductResponseDto getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
-
+//  public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
+    public ProductResponseDto getProductById(@PathVariable("id") long id)
+            throws ProductNotFoundException {
         Product product = productService.getProductById(id); // will mock this method in Test
         ProductResponseDto productResponseDto = ProductResponseDto.from(product); // from() is of ProductResponseDto that's why we are testing this line only.
 
 //        ResponseEntity<ProductResponseDto> responseEntity =
 //                new ResponseEntity<>(productResponseDto, HttpStatus.ACCEPTED);
-//
 //        return responseEntity;
         return productResponseDto;
     }
+*/
+    @GetMapping("/products/{id}")
+    public ProductResponseDto getProductById(@PathVariable("id") long id,
+                              @RequestHeader("Authorization") String token)
+            throws ProductNotFoundException {
+
+        // Validate the token -- No need in previous API
+         applicationCommons.validateToken(token);
+
+        Product product = productService.getProductById(id); // will mock this method in Test
+        ProductResponseDto productResponseDto = ProductResponseDto.from(product); // from() is of ProductResponseDto that's why we are testing this line only.
+
+        return productResponseDto;
+    }
+
 
     //List all products
 

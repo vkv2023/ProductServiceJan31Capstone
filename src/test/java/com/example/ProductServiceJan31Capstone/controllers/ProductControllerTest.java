@@ -51,11 +51,11 @@ public class ProductControllerTest {
 
         // in case no token validation for user login for any product use this and uncomment
         // getProductById(long id)
-        // ProductResponseDto productResponseDto = productController.getProductById(1L);
+         ProductResponseDto productResponseDto = productController.getProductById(1L);
 
         // in case token validation for user login for any product use this and uncomment
         // getProductById(long id, String token)
-        ProductResponseDto productResponseDto = productController.getProductById(1L, "");
+//        ProductResponseDto productResponseDto = productController.getProductById(1L, "");
 
         assertEquals(1L,productResponseDto.getId());
         assertEquals("name",productResponseDto.getName());
@@ -83,8 +83,8 @@ public class ProductControllerTest {
 
         // ResponseEntity<ProductResponseDto> productResponseDto = productController.getProductById(1L);
 
-//         ProductResponseDto productResponseDto = productController.getProductById(1L);
-        ProductResponseDto productResponseDto = productController.getProductById(1L, "");
+         ProductResponseDto productResponseDto = productController.getProductById(1L);
+//        ProductResponseDto productResponseDto = productController.getProductById(1L, "");
 
         // Can also be used
         // assertNull(productResponseDto);

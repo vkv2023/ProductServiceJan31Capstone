@@ -27,6 +27,7 @@ productDbService or fakeStoreProductService
 */
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     // FakeStoreProductService fakeStoreProductService;
@@ -59,11 +60,13 @@ public class ProductController {
         dummyProductResponseDto.setName("product " + id);
         dummyProductResponseDto.setPrice(11.22);
         dummyProductResponseDto.setImageUrl("https://images/url");
+
         //jackson, a spring library, will convert the object into json and vice-versa.
+
         return dummyProductResponseDto;
-
-       // place * /
-
+     */
+       // use below code rather the upper code
+/*
         Product product = fakeStoreProductService.getProductById(id);
         ProductResponseDto productResponseDto = ProductResponseDto.from(product);
 
@@ -81,8 +84,9 @@ public class ProductController {
 
     //  Need to use below api to use without user service interaction
     //  or no redirect to userService for product information
-/*
-    @GetMapping("/products/{id}")
+
+
+    @GetMapping("/{id}")
 //  public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
     public ProductResponseDto getProductById(@PathVariable("id") long id)
             throws ProductNotFoundException {
@@ -93,26 +97,28 @@ public class ProductController {
 //                new ResponseEntity<>(productResponseDto, HttpStatus.ACCEPTED);
 //        return responseEntity;
         return productResponseDto;
-    }
-*/
+}
+
+// Uncomment if you want to validate token first while checking the product
+/*
     @GetMapping("/products/{id}")
     public ProductResponseDto getProductById(@PathVariable("id") long id,
                               @RequestHeader("Authorization") String token)
             throws ProductNotFoundException {
 
         // Validate the token -- No need in previous API
-         applicationCommons.validateToken(token);
+
+        applicationCommons.validateToken(token);
 
         Product product = productService.getProductById(id); // will mock this method in Test
         ProductResponseDto productResponseDto = ProductResponseDto.from(product); // from() is of ProductResponseDto that's why we are testing this line only.
 
         return productResponseDto;
     }
-
-
+*/
     //List all products
 
-    @GetMapping("/products")
+    @GetMapping("/all")
     public List<ProductResponseDto> getAllProducts(){
         List<Product> products = productService.getAllProducts();
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();
@@ -130,7 +136,7 @@ public class ProductController {
 
     //Search products
 
-    @GetMapping("/products/search")
+    @GetMapping("/search")
     public ResponseEntity<List<ProductResponseDto>> searchProducts(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String category) {
@@ -147,7 +153,7 @@ public class ProductController {
     }
 
     //Create a new Product
-    @PostMapping("/products/create")
+    @PostMapping("/create")
     public ProductResponseDto createProduct(@RequestBody
                                             CreateFakeStoreProductRequestDto createProductRequestDto){
         Product product =
@@ -180,7 +186,7 @@ public class ProductController {
     }
 
     // Delete Product Physically or Marking Soft Delete
-    @DeleteMapping("/products/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteProductByID(@PathVariable long id) throws EmptyResultDataAccessException, ProductNotFoundException {
         Optional<Product> product = Optional.ofNullable(productService.getProductById(id));
 
@@ -191,7 +197,7 @@ public class ProductController {
 
             // If we need to Mark the isDeleted FLag as True
             productService.updateIsDeletedById(id);
-            return ResponseEntity.noContent().build(); //204 No Content
+            return ResponseEntity.noContent().build(); //204 No Content if isDeleted marked
         }
         return ResponseEntity.noContent().build(); // Not Found
     }

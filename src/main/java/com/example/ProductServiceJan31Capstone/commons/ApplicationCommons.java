@@ -19,10 +19,10 @@ public class ApplicationCommons {
         }
 
         // To validate the token using UserServiceJan31Capstone-master and below API (use userapi port)
-        // String url = "http://localhost:9001/validate/" + token ;
+         String url = "http://localhost:9001/validate/" + token ;
 
         // use below to direct the request to be handled by any instance of service
-        String url = "http://UserServiceJan31Capstone-master/validate/" + token ;
+        // String url = "http://UserServiceJan31Capstone-master/validate/" + token ;
         // restTemplate second argument as return type from the API.
         Boolean isValidToken = restTemplate.getForObject(url,Boolean.class);
 

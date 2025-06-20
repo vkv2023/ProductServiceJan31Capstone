@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class SearchController {
 
     SearchService searchService;
